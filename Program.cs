@@ -79,12 +79,15 @@ namespace SDT //Sharp Data Table
             t.doQuery("insert Connor¬Cumming¬14¬!AI!");
             t.doQuery("update Age id = \"1\" \"10\""); //Also able to update data.
             String inp = "";
+            object outp;
             while (true)
             {
                 Console.Clear();
                 drawTable(t);
                 Console.Write("\nQuery> "); inp = Console.ReadLine();
-                t.doQuery(inp);
+                outp = t.doQuery(inp);
+                Console.WriteLine(outp.ToString());
+                Console.ReadKey();
             }
             /*t.doQuery("column FirstName,SecondName,Age,id"); //Creating and naming the columns
             t.doQuery("insert Liam¬Allan¬16¬!AI!"); //Inserting data and so on - BRB for a second

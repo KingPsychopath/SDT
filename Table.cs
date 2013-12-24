@@ -27,6 +27,57 @@ namespace SDT
             return outp;
         }
 
+        public bool isTrue(String op, String a, String b)
+        {
+            bool outp = false;
+            switch (op)
+            {
+                case "%":
+                    if (a.Contains(b))
+                    {
+                        outp = true;
+                    }
+                    break;
+                case "=":
+                    if (a.Equals(b))
+                    {
+                        outp = true;
+                    }
+                    break;
+                case "!":
+                    if (Double.Parse(a) != Double.Parse(b))
+                    {
+                        outp = true;
+                    }
+                    break;
+                case ">":
+                    if (Double.Parse(a) > Double.Parse(b))
+                    {
+                        outp = true;
+                    }
+                    break;
+                case "<":
+                    if (Double.Parse(a) < Double.Parse(b))
+                    {
+                        outp = true;
+                    }
+                    break;
+                case ">=":
+                    if (Double.Parse(a) >= Double.Parse(b))
+                    {
+                        outp = true;
+                    }
+                    break;
+                case "<=":
+                    if (Double.Parse(a) <= Double.Parse(b))
+                    {
+                        outp = true;
+                    }
+                    break;
+            }
+            return outp;
+        }
+
         public object doQuery(String query)
         {
             String[] words = query.Split(' ');
@@ -42,20 +93,8 @@ namespace SDT
                         try
                         {
                             d = row.Split('¬');
-                            switch (words[2])
-                            {
-                                case "%":
-                                    if (d[getArrayNumber(words[1])].Contains(speech[1]))
-                                    {
-                                        outps += row + "}";
-                                    }
-                                    break;
-                                case "=":
-                                    if (d[getArrayNumber(words[1])] == speech[1])
-                                    {
-                                        outps += row + "}";
-                                    }
-                                    break;
+                            if (isTrue(words[2], d[getArrayNumber(words[1])], speech[1])) {
+                                outps += row + "}";
                             }
                             
                         }
@@ -68,22 +107,10 @@ namespace SDT
                         try
                         {
                             d = row.Split('¬');
-                            switch (words[2])
+                            if (isTrue(words[2], d[getArrayNumber(words[1])], speech[1]))
                             {
-                                case "%":
-                                    if (d[getArrayNumber(words[1])].Contains(speech[1]))
-                                    {
-                                        t = t.Replace(row + "}", "");
-                                    }
-                                    break;
-                                case "=":
-                                    if (d[getArrayNumber(words[1])] == speech[1])
-                                    {
-                                        t = t.Replace(row + "}", "");
-                                    }
-                                    break;
+                                t = t.Replace(row + "}", "");
                             }
-                            
                         }
                         catch { }
                     }
@@ -112,20 +139,9 @@ namespace SDT
                         try
                         {
                             d = row.Split('¬');
-                            switch (words[2])
+                            if (isTrue(words[2], d[getArrayNumber(words[1])], speech[1]))
                             {
-                                case "%":
-                                    if (d[getArrayNumber(words[1])].Contains(speech[1]))
-                                    {
-                                        outpi++;
-                                    }
-                                    break;
-                                case "=":
-                                    if (d[getArrayNumber(words[1])] == speech[1])
-                                    {
-                                        outpi++;
-                                    }
-                                    break;
+                                outpi++;
                             }
                         }
                         catch { }
@@ -138,21 +154,10 @@ namespace SDT
                         try
                         {
                             d = row.Split('¬');
-                            switch (words[3])
+                            if (isTrue(words[3], d[getArrayNumber(words[2])], speech[1]))
                             {
-                                case "%":
-                                    if (d[getArrayNumber(words[2])].Contains(speech[1])) //update age FirstName = "Liam" "10"
-                                    {
-                                        t = t.Replace(d[getArrayNumber(words[1])] + "¬", speech[3] + "¬");
-                                    }
-                                    break;
-                                case "=":
-                                    if (d[getArrayNumber(words[2])].Equals(speech[1]))
-                                    {
-                                        ns = row.Replace(d[getArrayNumber(words[1])] + "¬", speech[3] + "¬");
-                                        t = t.Replace(row, ns);
-                                    }
-                                    break;
+                                ns = row.Replace(d[getArrayNumber(words[1])] + "¬", speech[3] + "¬");
+                                t = t.Replace(row, ns);
                             }
                             
                         }
