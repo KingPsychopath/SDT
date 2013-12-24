@@ -74,10 +74,9 @@ namespace SDT //Sharp Data Table
         {
             Table t = new Table();
             t.importFromFile("table.txt");
-            t.exportToFile("t.txt");
-            String inp = "";
+            String inp = "hai";
             object outp;
-            while (true)
+            while (inp != "")
             {
                 Console.Clear();
                 drawTable(t);
@@ -86,15 +85,7 @@ namespace SDT //Sharp Data Table
                 Console.WriteLine(outp.ToString());
                 Console.ReadKey();
             }
-            /*t.doQuery("column FirstName,SecondName,Age,id"); //Creating and naming the columns
-            t.doQuery("insert Liam¬Allan¬16¬!AI!"); //Inserting data and so on - BRB for a second
-            t.doQuery("update Age id = \"1\" \"10\""); //Also able to update data.
-            t.doQuery("insert Cameron¬Davies¬16¬!AI!¬He's a cool guy.");
-            t.doQuery("insert Connor¬Cumming¬14¬!AI!¬Has a lot of Steam games.");
-            t.doQuery("insert Adam¬Martin¬19¬!AI!¬He's an Aussie.");
-            t.doQuery("insert Sophie¬Hagon¬16¬!AI!¬She's my wonderful and beautiful girlfriend.");
-            drawTable(t);
-            Console.ReadKey();*/
+            t.exportToFile("table.txt");
         }
     }
 }

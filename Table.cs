@@ -46,8 +46,11 @@ namespace SDT
                 d = col.Split('¬');
                 sb += d[0] + ",";
             }
-            sb = sb.TrimEnd(',');
-            file.WriteLine(sb);
+            if (sb.Trim() != "column")
+            {
+                sb = sb.TrimEnd(',');
+                file.WriteLine(sb);
+            }
             foreach (String row in t.Split('}'))
             {
                 if (!row.Equals(""))
@@ -146,10 +149,11 @@ namespace SDT
                         try
                         {
                             d = row.Split('¬');
-                            if (isTrue(words[2], d[getArrayNumber(words[1])], speech[1])) {
+                            if (isTrue(words[2], d[getArrayNumber(words[1])], speech[1]))
+                            {
                                 outps += row + "}";
                             }
-                            
+
                         }
                         catch { }
                     }
@@ -173,7 +177,8 @@ namespace SDT
                     String str = "";
                     String w;
                     rows++;
-                    foreach (String word in words) {
+                    foreach (String word in words)
+                    {
                         if (a != 0)
                         {
                             w = word.Replace("!AI!", rows.ToString());
@@ -202,21 +207,26 @@ namespace SDT
                     return outpi;
                 case "update":
                     String ns = "";
-                    foreach (String row in t.Split('}'))
+                    if (speech[1] != "")
                     {
                         try
                         {
-                            d = row.Split('¬');
-                            if (isTrue(words[3], d[getArrayNumber(words[2])], speech[1]))
+                            foreach (String row in t.Split('}'))
                             {
-                                ns = row.Replace(d[getArrayNumber(words[1])] + "¬", speech[3] + "¬");
-                                t = t.Replace(row, ns);
+                                d = row.Split('¬');
+                                if (isTrue(words[3], d[getArrayNumber(words[2])], speech[1]))
+                                {
+                                    ns = row.Replace(d[getArrayNumber(words[1])] + "¬", speech[3] + "¬");
+                                    t = t.Replace(row, ns);
+                                }
                             }
-                            
-                        }
-                        catch { }
+                            return true;
+                        } catch { return false; }
                     }
-                    return true;
+                    else
+                    {
+                        return false;
+                    }
                 case "column":
                     l = 0;
                     foreach (String col in words[1].Split(','))
