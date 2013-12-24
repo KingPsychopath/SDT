@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace SDT
 {
@@ -11,6 +12,34 @@ namespace SDT
         public String cd = ""; //column details Name¬0}name¬1}
         public String t = ""; //Rows - Starting from 0+ DATA¬MOREDATA}
         public int rows = 0;
+
+        public void importFromFile(String fileloc)
+        {
+            if (File.Exists(fileloc))
+            {
+                try
+                {
+                    using (StreamReader reader = new StreamReader(fileloc))
+                    {
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            doQuery(line.Replace("~", "¬"));
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("The file could not be read:");
+                    Console.WriteLine(e.Message);
+                }
+            }
+        }
+
+        public void exportToFile(String fileloc)
+        {
+
+        }
 
         public int getArrayNumber(String name)
         {

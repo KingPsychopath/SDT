@@ -73,11 +73,7 @@ namespace SDT //Sharp Data Table
         static void Main(string[] args)
         {
             Table t = new Table();
-            t.doQuery("column FirstName,SecondName,Age,id"); //Creating and naming the columns
-            t.doQuery("insert Liam¬Allan¬16¬!AI!"); //Inserting data and so on - BRB for a second
-            t.doQuery("insert Cameron¬Davies¬16¬!AI!");
-            t.doQuery("insert Connor¬Cumming¬14¬!AI!");
-            t.doQuery("update Age id = \"1\" \"10\""); //Also able to update data.
+            t.importFromFile("table.txt");
             String inp = "";
             object outp;
             while (true)
