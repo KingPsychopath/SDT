@@ -32,6 +32,7 @@ namespace SDT
             String[] words = query.Split(' ');
             String[] speech = query.Split('"');
             String[] d;
+            int l = 0;
             switch (words[0].ToLower())
             {
                 case "select": //SELECT name (=, %) "Liam" || Select COLUMN (=, %) "VALUE"
@@ -100,6 +101,7 @@ namespace SDT
                         }
                         a++;
                     }
+                    str = str.Trim();
                     if (!str.EndsWith("¬")) { str += "¬"; }
                     t += str + "}";
                     return true;
@@ -130,6 +132,7 @@ namespace SDT
                     }
                     return outpi;
                 case "update":
+                    String ns = "";
                     foreach (String row in t.Split('}'))
                     {
                         try
@@ -144,9 +147,10 @@ namespace SDT
                                     }
                                     break;
                                 case "=":
-                                    if (d[getArrayNumber(words[2])] == speech[1])
+                                    if (d[getArrayNumber(words[2])].Equals(speech[1]))
                                     {
-                                        t = t.Replace(d[getArrayNumber(words[1])] + "¬", speech[3] + "¬");
+                                        ns = row.Replace(d[getArrayNumber(words[1])] + "¬", speech[3] + "¬");
+                                        t = t.Replace(row, ns);
                                     }
                                     break;
                             }
@@ -156,12 +160,34 @@ namespace SDT
                     }
                     return true;
                 case "column":
-                    int l = 0;
+                    l = 0;
                     foreach (String col in words[1].Split(','))
                     {
                         l = cd.Split('}').Length - 1;
                         cd += col + "¬" + l + "}";
                     }
+                    return true;
+                case "nc":
+                    l = 0;
+                    foreach (String col in words[1].Split(','))
+                    {
+                        l = cd.Split('}').Length - 1;
+                        cd += col + "¬" + l + "}";
+                        if (t != "")
+                        {
+                            foreach (String row in t.Split('}'))
+                            {
+                                if (row != "")
+                                {
+                                    t = t.Replace(row, row + "NULL¬");
+                                }
+                            }
+                        }
+                    }
+                    return true;
+                case "empty":
+                    t = "";
+                    cd = "";
                     return true;
                 default:
                     return false;
