@@ -13,6 +13,11 @@ namespace SDT
         public String t = ""; //Rows - Starting from 0+ DATA¬MOREDATA}
         public int rows = 0;
 
+        public String cleanString(String value)
+        {
+            return value.Replace("~", "").Replace("¬", "").Replace("}", "");
+        }
+
         public void importFromFile(String fileloc)
         {
             if (File.Exists(fileloc))
@@ -180,12 +185,17 @@ namespace SDT
                     String str = "";
                     String w;
                     rows++;
+                    String sb = "";
                     foreach (String word in words)
                     {
                         if (a != 0)
                         {
                             w = word.Replace("!AI!", rows.ToString());
-                            str += w + " ";
+                            foreach (String value in w.Split('¬'))
+                            {
+                                sb += cleanString(value) + "¬";
+                            }
+                            str += sb + " ";
                         }
                         a++;
                     }
@@ -220,6 +230,7 @@ namespace SDT
                                 if (isTrue(words[3], d[getArrayNumber(words[2])], speech[1]))
                                 {
                                     ns = row.Replace(d[getArrayNumber(words[1])] + "¬", speech[3] + "¬");
+                                    ns = cleanString(ns);
                                     t = t.Replace(row, ns);
                                 }
                             }
@@ -236,7 +247,7 @@ namespace SDT
                     foreach (String col in words[1].Split(','))
                     {
                         l = cd.Split('}').Length - 1;
-                        cd += col + "¬" + l + "}";
+                        cd += cleanString(col) + "¬" + l + "}";
                     }
                     return true;
                 case "nc":
@@ -244,7 +255,7 @@ namespace SDT
                     foreach (String col in words[1].Split(','))
                     {
                         l = cd.Split('}').Length - 1;
-                        cd += col + "¬" + l + "}";
+                        cd += cleanString(col) + "¬" + l + "}";
                         if (t != "")
                         {
                             foreach (String row in t.Split('}'))

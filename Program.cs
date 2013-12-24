@@ -33,13 +33,13 @@ namespace SDT //Sharp Data Table
             return outp;
         }
 
-        public static void drawTable(Table t)
+        public static void drawTable(Table t, int size)
         {
-            Console.WriteLine("----");
+            /*Console.WriteLine("----");
             Console.WriteLine(t.cd);
             Console.WriteLine("----");
             Console.WriteLine(t.t);
-            Console.WriteLine("----");
+            Console.WriteLine("----");*/
             String[] d;
             String cn = ""; //Column name
             foreach (String col in t.cd.Split('}'))
@@ -49,7 +49,7 @@ namespace SDT //Sharp Data Table
                 {
                     d = col.Split('¬');
                     cn = d[0];
-                    Console.Write(getShort(d[0], 10));
+                    Console.Write(getShort(d[0], size));
                 }
             }
             Console.WriteLine();
@@ -62,7 +62,7 @@ namespace SDT //Sharp Data Table
                     foreach (String col in d)
                     {
                         Console.Write(" | ");
-                        Console.Write(getShort(col, 10));
+                        Console.Write(getShort(col, size));
                     }
                     
                     //Console.WriteLine(d[t.getArrayNumber("FirstName")] + " " + d[t.getArrayNumber("SecondName")] + ", is " + d[t.getArrayNumber("Age")] + " years old and is ID " + d[t.getArrayNumber("id")] + ". " + d[t.getArrayNumber("info")]);
@@ -72,6 +72,10 @@ namespace SDT //Sharp Data Table
         
         static void Main(string[] args)
         {
+            Console.SetWindowSize(Console.LargestWindowWidth / 2, Console.LargestWindowHeight / 2);
+            Console.SetBufferSize(Console.LargestWindowWidth / 2, Console.LargestWindowHeight / 2);
+            Console.SetWindowPosition(0, 0);
+            Console.Title = "Sharp Data Table";
             Table t = new Table();
             t.importFromFile("table.txt");
             String inp = "hai";
@@ -79,7 +83,7 @@ namespace SDT //Sharp Data Table
             while (inp != "")
             {
                 Console.Clear();
-                drawTable(t);
+                drawTable(t, 11);
                 Console.Write("\nQuery> "); inp = Console.ReadLine();
                 outp = t.doQuery(inp);
                 Console.WriteLine(outp.ToString());
