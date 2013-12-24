@@ -38,7 +38,31 @@ namespace SDT
 
         public void exportToFile(String fileloc)
         {
-
+            System.IO.StreamWriter file = new System.IO.StreamWriter(fileloc);
+            String[] d;
+            String sb = "column ";
+            foreach (String col in cd.Split('}'))
+            {
+                d = col.Split('¬');
+                sb += d[0] + ",";
+            }
+            sb = sb.TrimEnd(',');
+            file.WriteLine(sb);
+            foreach (String row in t.Split('}'))
+            {
+                if (!row.Equals(""))
+                {
+                    sb = "insert ";
+                    d = row.Split('¬');
+                    foreach (String value in d)
+                    {
+                        sb += value.Replace("~", "") + "~";
+                    }
+                    sb = sb.TrimEnd('~');
+                    file.WriteLine(sb);
+                }
+            }
+            file.Close();
         }
 
         public int getArrayNumber(String name)

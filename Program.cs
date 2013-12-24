@@ -74,6 +74,7 @@ namespace SDT //Sharp Data Table
         {
             Table t = new Table();
             t.importFromFile("table.txt");
+            t.exportToFile("t.txt");
             String inp = "";
             object outp;
             while (true)
