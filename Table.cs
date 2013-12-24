@@ -41,28 +41,31 @@ namespace SDT
             System.IO.StreamWriter file = new System.IO.StreamWriter(fileloc);
             String[] d;
             String sb = "column ";
-            foreach (String col in cd.Split('}'))
+            if (cd.Trim() != "")
             {
-                d = col.Split('¬');
-                sb += d[0] + ",";
-            }
-            if (sb.Trim() != "column")
-            {
+                foreach (String col in cd.Split('}'))
+                {
+                    d = col.Split('¬');
+                    sb += d[0] + ",";
+                }
                 sb = sb.TrimEnd(',');
                 file.WriteLine(sb);
             }
-            foreach (String row in t.Split('}'))
+            if (!t.Equals(""))
             {
-                if (!row.Equals(""))
+                foreach (String row in t.Split('}'))
                 {
-                    sb = "insert ";
-                    d = row.Split('¬');
-                    foreach (String value in d)
+                    if (!row.Equals(""))
                     {
-                        sb += value.Replace("~", "") + "~";
+                        sb = "insert ";
+                        d = row.Split('¬');
+                        foreach (String value in d)
+                        {
+                            sb += value.Replace("~", "") + "~";
+                        }
+                        sb = sb.TrimEnd('~');
+                        file.WriteLine(sb);
                     }
-                    sb = sb.TrimEnd('~');
-                    file.WriteLine(sb);
                 }
             }
             file.Close();
@@ -221,7 +224,8 @@ namespace SDT
                                 }
                             }
                             return true;
-                        } catch { return false; }
+                        }
+                        catch { return false; }
                     }
                     else
                     {
