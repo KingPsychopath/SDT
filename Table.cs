@@ -7,7 +7,7 @@ using System.IO;
 
 namespace SDT
 {
-    class Table
+    public class Table
     {
         public String cd = ""; //column details Name¬0}name¬1}
         public String t = ""; //Rows - Starting from 0+ DATA¬MOREDATA}
