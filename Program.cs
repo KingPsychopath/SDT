@@ -34,7 +34,7 @@ namespace SDT //Sharp Data Table
             return outp;
         }
 
-        public static void drawTable(Table t, int size)
+        public static void drawTable(Table t, int size, String query)
         {
             /*Console.WriteLine("----");
             Console.WriteLine(t.cd);
@@ -54,7 +54,11 @@ namespace SDT //Sharp Data Table
                 }
             }
             Console.WriteLine();
-            foreach (String data in t.doQuery("select " + cn + " % \"\"").ToString().Split('}'))
+            if (query == "")
+            {
+                query = "select " + cn + " % \"\"";
+            }
+            foreach (String data in t.doQuery(query).ToString().Split('}'))
             {
                 Console.WriteLine();
                 if (data != "")
@@ -65,7 +69,6 @@ namespace SDT //Sharp Data Table
                         Console.Write(" | ");
                         Console.Write(getShort(col, size));
                     }
-                    
                     //Console.WriteLine(d[t.getArrayNumber("FirstName")] + " " + d[t.getArrayNumber("SecondName")] + ", is " + d[t.getArrayNumber("Age")] + " years old and is ID " + d[t.getArrayNumber("id")] + ". " + d[t.getArrayNumber("info")]);
                 }
             }
@@ -79,16 +82,26 @@ namespace SDT //Sharp Data Table
             Console.Title = "Sharp Data Table";
             Table t = new Table();
             t.importFromFile("table.txt");
-            String inp = "hai";
+            String inp = "";
             object outp;
-            while (inp != "")
+            while (inp != "EXIT")
             {
                 Console.Clear();
-                drawTable(t, 11);
+                if (inp.StartsWith("select"))
+                {
+                    drawTable(t, 11, inp);
+                }
+                else
+                {
+                    drawTable(t, 11, "");
+                }
                 Console.Write("\nQuery> "); inp = Console.ReadLine();
-                outp = t.doQuery(inp);
-                Console.WriteLine(outp.ToString());
-                Console.ReadKey();
+                if (!inp.StartsWith("select"))
+                {
+                    outp = t.doQuery(inp);
+                    Console.WriteLine(outp.ToString());
+                    Console.ReadKey();
+                }
             }
             t.exportToFile("table.txt");
         }

@@ -13,11 +13,6 @@ namespace SDT
         public String t = ""; //Rows - Starting from 0+ DATA¬MOREDATA}
         public int rows = 0;
 
-        public String cleanString(String value)
-        {
-            return value.Replace("~", "").Replace("¬", "").Replace("}", "");
-        }
-
         public void importFromFile(String fileloc)
         {
             if (File.Exists(fileloc))
@@ -102,6 +97,12 @@ namespace SDT
                         outp = true;
                     }
                     break;
+                case "!%":
+                    if (!a.Contains(b))
+                    {
+                        outp = true;
+                    }
+                    break;
                 case "=":
                     if (a.Equals(b))
                     {
@@ -139,6 +140,7 @@ namespace SDT
                     }
                     break;
             }
+            if (b == "*") { outp = true; }
             return outp;
         }
 
@@ -185,17 +187,12 @@ namespace SDT
                     String str = "";
                     String w;
                     rows++;
-                    String sb = "";
                     foreach (String word in words)
                     {
                         if (a != 0)
                         {
                             w = word.Replace("!AI!", rows.ToString());
-                            foreach (String value in w.Split('¬'))
-                            {
-                                sb += cleanString(value) + "¬";
-                            }
-                            str += sb + " ";
+                            str += w + " ";
                         }
                         a++;
                     }
@@ -229,8 +226,9 @@ namespace SDT
                                 d = row.Split('¬');
                                 if (isTrue(words[3], d[getArrayNumber(words[2])], speech[1]))
                                 {
+                                    //Liam¬20¬20¬}
+                                    //     ^   ^ - Would replace both 20s because they end in the same number
                                     ns = row.Replace(d[getArrayNumber(words[1])] + "¬", speech[3] + "¬");
-                                    ns = cleanString(ns);
                                     t = t.Replace(row, ns);
                                 }
                             }
@@ -247,7 +245,7 @@ namespace SDT
                     foreach (String col in words[1].Split(','))
                     {
                         l = cd.Split('}').Length - 1;
-                        cd += cleanString(col) + "¬" + l + "}";
+                        cd += col + "¬" + l + "}";
                     }
                     return true;
                 case "nc":
@@ -255,7 +253,7 @@ namespace SDT
                     foreach (String col in words[1].Split(','))
                     {
                         l = cd.Split('}').Length - 1;
-                        cd += cleanString(col) + "¬" + l + "}";
+                        cd += col + "¬" + l + "}";
                         if (t != "")
                         {
                             foreach (String row in t.Split('}'))
