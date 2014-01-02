@@ -34,13 +34,47 @@ namespace SDT //Sharp Data Table
             return outp;
         }
 
+        public static void htmlTable(Table t)
+        {
+            System.IO.StreamWriter file = new System.IO.StreamWriter("table.html");
+            String[] d;
+            String cn = "";
+            String sb = "";
+            file.WriteLine("<html><table border=5><tr>");
+            foreach (String col in t.cd.Split('}'))
+            {
+                if (col != "")
+                {
+                    d = col.Split('¬');
+                    cn = d[0];
+                    sb += "<td>" + d[0] + "</td>";
+                }
+            }
+            file.WriteLine(sb + "</tr><tr>");
+            foreach (String data in t.doQuery("select " + cn + " % \"\"").ToString().Split('}'))
+            {
+                Console.WriteLine();
+                sb = "<tr>";
+                if (data != "")
+                {
+                    d = data.Split('¬');
+                    foreach (String col in d)
+                    {
+                        if (col != "")
+                        {
+                            sb += "<td>" + col + "</td>";
+                        }
+                    }
+                    sb += "</tr>";
+                    file.WriteLine(sb);
+                }
+            }
+            sb = "</table></html>";
+            file.Close();
+        }
+
         public static void drawTable(Table t, int size, String query)
         {
-            /*Console.WriteLine("----");
-            Console.WriteLine(t.cd);
-            Console.WriteLine("----");
-            Console.WriteLine(t.t);
-            Console.WriteLine("----");*/
             String[] d;
             String cn = ""; //Column name
             foreach (String col in t.cd.Split('}'))
@@ -104,6 +138,7 @@ namespace SDT //Sharp Data Table
                 }
             }
             t.exportToFile("table.txt");
+            htmlTable(t);
         }
     }
 }
