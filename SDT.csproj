@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SharpDataTable\Row.cs" />
+    <Compile Include="SharpDataTable\Table.cs" />
     <Compile Include="Table.cs" />
   </ItemGroup>
   <ItemGroup>
