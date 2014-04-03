@@ -32,7 +32,7 @@ namespace SharpDataTable
             {
                 line += column + ",";
             }
-            outp.Add(line);
+            outp.Add(line.Trim(','));
             foreach (Row row in Rows)
             {
                 line = "insert \"";
@@ -61,7 +61,7 @@ namespace SharpDataTable
             int dindex;
             switch (args[0].ToLower())
             {
-                case "column":
+                case "column": //column Value,Value,value
                     foreach (String name in args[1].Split(','))
                     {
                         if (name != "") Columns.Add(name);
@@ -71,7 +71,7 @@ namespace SharpDataTable
                         }
                     }
                     return true;
-                case "insert":
+                case "insert": //insert "VALUE¬VALUE¬VALUE"
                     Row r = new Row();
                     foreach (String value in speech[1].Split('¬'))
                     {
@@ -79,7 +79,7 @@ namespace SharpDataTable
                     }
                     Rows.Add(r);
                     return true;
-                case "delete":
+                case "delete": //delete "Column name" =% "Value" //DELETE ALL ROWS WITH COLUMN CONTAINS/EQUALING VALUE
                     int outp = 0; //deleted amount
                     dindex = getIndex(speech[1]);
                     List<Row> remove = new List<Row>();
@@ -147,11 +147,39 @@ namespace SharpDataTable
                         Console.WriteLine(dindex.ToString());
                         return false;
                     }
+                case "get": //get "column name" = "value" "column to return"
+                    dindex = getIndex(speech[1]);
+                    if (dindex >= 0)
+                    {
+                        foreach (Row row in Rows)
+                        {
+                            switch (speech[2].Trim())
+                            {
+                                case "=":
+                                    if (row.RowValues[dindex] == speech[3])
+                                    {
+                                        return row.RowValues[getIndex(speech[5])];
+                                    }
+                                    break;
+                                case "%":
+                                    if (row.RowValues[dindex].Contains(speech[3]))
+                                    {
+                                        return row.RowValues[getIndex(speech[6])];
+                                    }
+                                    break;
+                            }
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        Console.WriteLine(dindex.ToString());
+                        return false;
+                    }
                 case "drop":
                     Columns.Clear();
                     Rows.Clear();
                     return true;
-                    break;
             }
             return false;
         }

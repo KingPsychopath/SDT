@@ -56,6 +56,7 @@ namespace SDT //Sharp Data Table
                 {
                     Console.Write(" " + getShort("--------------------------", 14) + " |");
                 }
+                Console.WriteLine();
 
                 foreach (SharpDataTable.Row row in Table.Rows)
                 {
